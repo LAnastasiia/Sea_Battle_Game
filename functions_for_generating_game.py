@@ -1,3 +1,6 @@
+# File: functions_for_generating_game.py
+# This module contains functions needed for generating and checking the
+# sea-battle field for Sea Battle game.
 import string
 import random
 
@@ -30,7 +33,7 @@ def has_ship(data, coord):
     """
     for key in data:
         if key == coord:
-            if data[key] == '*':
+            if data[key] == '#':
                 return True
             else:
                 return False
@@ -85,9 +88,7 @@ def ship_size(data, coord):
                         (search_side(data, coord, 'down')))
         return ship_len
 
-    else:
-        print("No ship found on {}".format(coord))
-        return 0
+    return 0
 
 
 def is_valid(data):
@@ -105,6 +106,8 @@ def is_valid(data):
         check_size_dict = dict()
         for key_coord in data:
             ship_len = ship_size(data, key_coord)
+            if ship_len:
+                print(ship_len)
             if ship_len < 5:
                 if ship_len in check_size_dict:
                     check_size_dict[ship_len] += 1
@@ -112,6 +115,7 @@ def is_valid(data):
                     check_size_dict[ship_len] = 1
             else:
                 print("Wrong length of ship. All shipps must be less than 5.")
+        print(check_size_dict)
         if (check_size_dict[4] == 4 and check_size_dict[3] == 6 and
             check_size_dict[2] == 6 and check_size_dict[1] == 4):
 
@@ -164,7 +168,7 @@ def check_zone(data, coord, character):
     coordinate. Returns amount of found characters.
     """
     count = 0
-    for (x,y) in {(0,0), (1,0), (-1,0), (0, 1), (0, -1)}:
+    for (x,y) in {(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)}:
         if (coord[0]+x, coord[1]+y) in data:
             if data[coord[0]+x, coord[1]+y] == '#':
                 count += 1
@@ -211,7 +215,6 @@ def build_ship(data_gen, size):
             direction = 'left'
             coord = ship_coord
 
-
         # Set new_coord according to the direcion of building.
         if direction == 'up':
             new_coord = (coord[0]-1, coord[1])
@@ -230,8 +233,9 @@ def build_ship(data_gen, size):
             # Add ship part on the field-cell.
             data_gen[new_coord] = '#'
             print(new_coord)
-            coord = new_coord
+
             ship_len += 1
+        coord = new_coord
 
     print(field_to_str(data_gen))
 
@@ -250,6 +254,8 @@ def generate_field():
             build_ship(data, length)
         length -= 1
         num_of_ships += 1
+    print(data)
+    print(is_valid(data))
 
     return data
 generate_field()
