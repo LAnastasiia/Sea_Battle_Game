@@ -181,46 +181,99 @@ def search_side(data, coord, side, char='#'):
     return ship_length
 
 
-def build_ship(data, size):
-    while True:
-        coord = (random.randint(1, 10), random.randint(1,10))
-        directions = ['up', 'down', 'left', 'right']
-        direction = random.choice(directions)
-        if direction == 'up' or direction == 'down':
-            if (search_side(data, coord, direction, '·') > size and (search_side(data, (coord[0], coord[1]+1), direction, '·') > 1) and
-                search_side(data, (coord[0], coord[1]-1), direction, '·')):
-                    break
-        elif direction == 'left' or direction == 'right':
-            if (search_side(data, coord, direction, '·') > size and (search_side(data, (coord[0]+1, coord[1]), direction, '·') > 1) and
-                search_side(data, (coord[0]-1, coord[1]), direction, '·')):
-                break
-        else:
-            continue
+def check_zone(data, data_with_ships, coord, direct, ship_lengh):
+    data_try = dict()
+    if data[coord] == '#' or coord in data_with_ships:
+        return False
+    data_try[coord] = '#'
     ship_len = 1
-    while ship_len < size+1:
-        # Set new_coord according to the direcion of building.
-        if direction == 'up':
+    while ship_len < ship_lengh:
+        if direct == 'up':
             new_coord = (coord[0]-1, coord[1])
-
-        elif direction == 'down':
+        elif direct == 'down':
             new_coord = (coord[0]+1, coord[1])
-
-        elif direction == 'left':
+        elif direct == 'left':
             new_coord = (coord[0], coord[1]-1)
-
-        elif direction == 'right':
+        else:
             new_coord = (coord[0], coord[1]+1)
 
-        data[new_coord] = '#'
-        coord = new_coord
+        if (new_coord in data_with_ships) or (new_coord not in data):
+            return False
+
+        data_try[new_coord] = '#'
         ship_len += 1
-        print(new_coord)
+        coord = new_coord
+
+
+    for coords in data_try:
+        if direct == 'up' or direct == 'down':
+            data_with_ships.extend([coords, (coords[0], coords[1]+1),
+                                (coords[0], coords[1]-1)])
+        else:
+            data_with_ships.extend([coords, (coords[0]+1, coords[1]),
+                                (coords[0]-1, coords[1])])
+
+    if direct == 'up' or direct == 'down':
+        sorted_data_try = sorted(data_try, key = lambda x: x[0], reverse=False)
+        min_ship_coord = sorted_data_try[0]
+        print("min coord:", min_ship_coord)
+        print("max sort", sorted_data_try)
+        max_ship_coord = sorted_data_try[-1]
+        print(max_ship_coord)
+        data_with_ships.extend([(min_ship_coord[0]-1,min_ship_coord[1]),
+                               (min_ship_coord[0]-1, min_ship_coord[1]-1),
+                               (min_ship_coord[0]-1, min_ship_coord[1]+1),
+                               (max_ship_coord[0]+1, max_ship_coord[1]),
+                               (max_ship_coord[0]+1, max_ship_coord[1]-1),
+                               (max_ship_coord[0]+1, max_ship_coord[1]+1)])
+    elif direct == 'left' or direct == 'right':
+        sorted_data_try = sorted(data_try, key = lambda x: x[1], reverse=False)
+        min_ship_coord = sorted_data_try[0]
+        print("min coord:", min_ship_coord)
+        print("max sort", sorted_data_try)
+        max_ship_coord = sorted_data_try[-1]
+        print("max coord", max_ship_coord)
+        data_with_ships.extend([(min_ship_coord[0],min_ship_coord[1]-1),
+                               (min_ship_coord[0]-1, min_ship_coord[1]-1),
+                               (min_ship_coord[0]+1, min_ship_coord[1]-1),
+                               (max_ship_coord[0], max_ship_coord[1]+1),
+                               (max_ship_coord[0]-1, max_ship_coord[1]+1),
+                               (max_ship_coord[0]+1, max_ship_coord[1]+1)])
+
+    print("data_try:", data_try)
+    print("data with ships:", data_with_ships)
+    return (data_try)
+
+def build_ship(data, ship_lengh):
+    """
+    This function builds ship of given length in randomly chosen coordinate
+    and direction.
+    """
+    directions = ['left', 'right', 'up', 'down']
+    while True:
+        coord = (random.randint(1,10), random.randint(1,10))
+        direct = random.choice(directions)
+        checked_data = check_zone(data, data_with_ships, coord, direct,
+                                  ship_lengh)
+        if checked_data:
+            data.update(checked_data)
+            break
+
+def generate_field():
+    """
+    This function generates a 10 * 10 sea-battle-field with valid amount ships
+    using functions generate_data() and build_ship(data_gen, size).
+    """
+    num_of_ships = 1
+    data = generate_data()
+    length = 4
+    for _ in range(4):
+        for i in range(num_of_ships):
+            build_ship(data, length)
+        length -= 1
+        num_of_ships += 1
     return data
 
-
+data_with_ships = list()
 data = generate_data()
-data_gen = build_ship(data, 4)
-print(data_gen)
-print(field_to_str(data_gen))
-# print(has_ship(data, (10,1), char='*'))
-# print(search_side(data, (10,1), 'right', char='*'))
+print(field_to_str(generate_field()))

@@ -48,11 +48,11 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
                                 (coords[0]-1, coords[1])])
 
     if direct == 'up' or direct == 'down':
-
-        min_ship_coord = sorted(data_try, key = lambda x: x[1])[0]
+        sorted_data_try = sorted(data_try, key = lambda x: x[0], reverse=False)
+        min_ship_coord = sorted_data_try[0]
         print("min coord:", min_ship_coord)
-        print("max sort", sorted(data_try, key = lambda x: x[1]))
-        max_ship_coord = sorted(data_try, key = lambda x: x[1])[-1]
+        print("max sort", sorted_data_try)
+        max_ship_coord = sorted_data_try[-1]
         print(max_ship_coord)
         data_with_ships.extend([(min_ship_coord[0]-1,min_ship_coord[1]),
                                (min_ship_coord[0]-1, min_ship_coord[1]-1),
@@ -61,7 +61,7 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
                                (max_ship_coord[0]+1, max_ship_coord[1]-1),
                                (max_ship_coord[0]+1, max_ship_coord[1]+1)])
     elif direct == 'left' or direct == 'right':
-        sorted_data_try = sorted(data_try, key = lambda x: x[0])
+        sorted_data_try = sorted(data_try, key = lambda x: x[1], reverse=False)
         min_ship_coord = sorted_data_try[0]
         print("min coord:", min_ship_coord)
         print("max sort", sorted_data_try)
@@ -74,9 +74,6 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
                                (max_ship_coord[0]-1, max_ship_coord[1]+1),
                                (max_ship_coord[0]+1, max_ship_coord[1]+1)])
 
-        # else:
-        #     data_with_ships.extend([coords, (coords[0]-1, coords[1]),
-        #                            (coords[0]+1, coords[1])])
     print("data_try:", data_try)
     print("data with ships:", data_with_ships)
     return (data_try)
@@ -87,7 +84,6 @@ def build_ship(data, ship_lengh):
     while True:
         coord = (random.randint(1,10), random.randint(1,10))
         direct = random.choice(directions)
-        print(coord, direct, '\n')
         checked_data = check_zone(data, data_with_ships, coord, direct, ship_lengh)
         if checked_data:
             data.update(checked_data)
@@ -105,14 +101,10 @@ def generate_field():
     data = generate_data()
     length = 4
     for _ in range(4):
-
         for i in range(num_of_ships):
             build_ship(data, length)
-            print("{} building ship of size {}".format(num_of_ships, length))
-
         length -= 1
         num_of_ships += 1
-
     return data
 
 def field_to_str(data):
