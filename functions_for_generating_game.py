@@ -26,46 +26,22 @@ def read_field(file_name):
         return data
 
 
-def has_ship(data, coord):
+def has_ship(data, coord, char='#'):
     """
     (dict) -> (bool)
     This function checks presence of ship on certain coordinates.
     """
     for key in data:
         if key == coord:
-            if data[key] == '#':
+            if data[key] == char:
                 return True
-            else:
-                return False
+    return False
 
 
-def search_side(data, coord, side):
-    """
-    (dict, tuple, str) -> (int)
-    This function searches for ship body in one given direction (starting
-    from certain coordinates) and returns it's length.
-    """
-    ship_length = 0
-    while True:
-        if side == 'up':
-            try_coord = (coord[0]-1, coord[1])
-        elif side == 'down:':
-            try_coord = (coord[0]+1, coord[1])
-        elif side == 'left':
-            try_coord = (coord[0], coord[1]-1)
-        else:
-            try_coord = (coord[0], coord[1]+1)
-
-        if has_ship(data, try_coord):
-            ship_length += 1
-            coord = try_coord
-            continue
-
-        break
-    return ship_length
 
 
-def ship_size(data, coord):
+
+def ship_size(data, coord, char='#'):
     """
     (dict, tuple) -> (int)
 
@@ -77,7 +53,7 @@ def ship_size(data, coord):
     """
     ship_len = 0
 
-    if has_ship(data, coord):
+    if has_ship(data, coord, char):
         ship_len = 1
         if search_side(data, coord, 'left'):
             ship_len += (search_side(data, coord, 'left') +
@@ -106,8 +82,6 @@ def is_valid(data):
         check_size_dict = dict()
         for key_coord in data:
             ship_len = ship_size(data, key_coord)
-            if ship_len:
-                print(ship_len)
             if ship_len < 5:
                 if ship_len in check_size_dict:
                     check_size_dict[ship_len] += 1
@@ -115,7 +89,6 @@ def is_valid(data):
                     check_size_dict[ship_len] = 1
             else:
                 print("Wrong length of ship. All shipps must be less than 5.")
-        print(check_size_dict)
         if (check_size_dict[4] == 4 and check_size_dict[3] == 6 and
             check_size_dict[2] == 6 and check_size_dict[1] == 4):
 
@@ -161,60 +134,70 @@ def generate_data():
     return data_gen
 
 
-def check_zone(data, coord, character):
+
+# def generate_field():
+#     """
+#     This function generates a 10 * 10 sea-battle-field with valid amount ships
+#     using functions generate_data() and build_ship(data_gen, size).
+#     """
+#     num_of_ships = 1
+#     data = generate_data()
+#     length = 4
+#     for _ in range(4):
+#
+#         for i in range(num_of_ships):
+#             build_ship(data, length)
+#         length -= 1
+#         num_of_ships += 1
+#
+#
+#     return data
+
+def search_side(data, coord, side, char='#'):
     """
     (dict, tuple, str) -> (int)
-    This function checks, how many certain characters there are around given
-    coordinate. Returns amount of found characters.
+    This function searches for ship body in one given direction (starting
+    from certain coordinates) and returns it's length.
     """
-    count = 0
-    for (x,y) in {(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)}:
-        if (coord[0]+x, coord[1]+y) in data:
-            if data[coord[0]+x, coord[1]+y] == '#':
-                count += 1
-    return count
-
-
-def build_ship(data_gen, size):
-    """
-    This function builds a ship of given size on the field, according
-    to data_gen info. Returns modyfied (with instrted values of some cells)
-    data_gen dict.
-    """
+    ship_length = 1
     while True:
-        # Choose starting coord randomly.
-        coord = (random.randint(1, 10), random.randint(1, 10))
-        # Assign coord values to ship_coord to keep original coords unchanged.
-        ship_coord = coord
-        print("ship:", ship_coord)
-        # Check zone around coord.
-        if check_zone(data_gen, coord, '#') == 0:
-            data_gen[coord] = '#'
-            ship_len = 1
+        if side == 'up':
+            try_coord = (coord[0]-1, coord[1])
+        elif side == 'down:':
+            try_coord = (coord[0]+1, coord[1])
+        elif side == 'left':
+            try_coord = (coord[0], coord[1]-1)
+        else:
+            try_coord = (coord[0], coord[1]+1)
+
+        if try_coord in data:
+            if has_ship(data, try_coord, char):
+                ship_length += 1
+                coord = try_coord
+            else:
+                break
+        else:
             break
+    return ship_length
 
-    # Pick a direction randomly.
-    directions = ['up', 'down', 'left', 'right']
-    direction = random.choice(directions)
 
-    while ship_len < size:
-        # Check border positions. Change direction on the end of the field.
-        if direction == 'up' and coord[0] == 1:
-            direction = 'down'
-            coord = ship_coord
-
-        elif direction == 'down' and coord[0] == 10:
-            direction = 'up'
-            coord = ship_coord
-
-        elif direction == 'left' and coord[1] == 1:
-            direction = 'right'
-            coord = ship_coord
-
-        elif direction == 'right' and coord[1] == 10:
-            direction = 'left'
-            coord = ship_coord
-
+def build_ship(data, size):
+    while True:
+        coord = (random.randint(1, 10), random.randint(1,10))
+        directions = ['up', 'down', 'left', 'right']
+        direction = random.choice(directions)
+        if direction == 'up' or direction == 'down':
+            if (search_side(data, coord, direction, '·') > size and (search_side(data, (coord[0], coord[1]+1), direction, '·') > 1) and
+                search_side(data, (coord[0], coord[1]-1), direction, '·')):
+                    break
+        elif direction == 'left' or direction == 'right':
+            if (search_side(data, coord, direction, '·') > size and (search_side(data, (coord[0]+1, coord[1]), direction, '·') > 1) and
+                search_side(data, (coord[0]-1, coord[1]), direction, '·')):
+                break
+        else:
+            continue
+    ship_len = 1
+    while ship_len < size+1:
         # Set new_coord according to the direcion of building.
         if direction == 'up':
             new_coord = (coord[0]-1, coord[1])
@@ -228,34 +211,16 @@ def build_ship(data_gen, size):
         elif direction == 'right':
             new_coord = (coord[0], coord[1]+1)
 
-        # Check if there are no other ships on neighbour cells.
-        if (new_coord in data_gen and check_zone(data_gen, new_coord, '#')) == 1:
-            # Add ship part on the field-cell.
-            data_gen[new_coord] = '#'
-            print(new_coord)
-
-            ship_len += 1
+        data[new_coord] = '#'
         coord = new_coord
-
-    print(field_to_str(data_gen))
-
-
-def generate_field():
-    """
-    This function generates a 10 * 10 sea-battle-field with valid amount ships
-    using functions generate_data() and build_ship(data_gen, size).
-    """
-    num_of_ships = 1
-    data = generate_data()
-    length = 4
-    for _ in range(4):
-
-        for i in range(num_of_ships):
-            build_ship(data, length)
-        length -= 1
-        num_of_ships += 1
-    print(data)
-    print(is_valid(data))
-
+        ship_len += 1
+        print(new_coord)
     return data
-generate_field()
+
+
+data = generate_data()
+data_gen = build_ship(data, 4)
+print(data_gen)
+print(field_to_str(data_gen))
+# print(has_ship(data, (10,1), char='*'))
+# print(search_side(data, (10,1), 'right', char='*'))
