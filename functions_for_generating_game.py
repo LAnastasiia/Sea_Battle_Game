@@ -135,24 +135,6 @@ def generate_data():
 
 
 
-# def generate_field():
-#     """
-#     This function generates a 10 * 10 sea-battle-field with valid amount ships
-#     using functions generate_data() and build_ship(data_gen, size).
-#     """
-#     num_of_ships = 1
-#     data = generate_data()
-#     length = 4
-#     for _ in range(4):
-#
-#         for i in range(num_of_ships):
-#             build_ship(data, length)
-#         length -= 1
-#         num_of_ships += 1
-#
-#
-#     return data
-
 def search_side(data, coord, side, char='#'):
     """
     (dict, tuple, str) -> (int)
