@@ -1,4 +1,4 @@
-# File: functions_for_generating_game.py
+# File: functions_for_game.py
 # This module contains functions needed for generating and checking the
 # sea-battle field for Sea Battle game.
 import string
