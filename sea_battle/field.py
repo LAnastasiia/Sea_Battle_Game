@@ -17,10 +17,24 @@ class Field:
         for i in range(1, 11):
             for j in range(1, 11):
                 if data[(i, j)] == '#':
-                    if data.get((i, j+1)) == '#' and  data.get((i, j-1)) != '#':
-                        lengtn = functions_for_game.search_side(data, (i, j), 'right', char='#')
-                        position = True
 
+                    if data.get((i, j+1)) == '#' and  data.get((i, j-1)) != '#':
+                        print("checking", (i,j))
+                        length = functions_for_game.search_side(data, (i, j), 'right', char='#')
+                        position = True
+                    elif data.get((i+1, j)) == '#' and  data.get((i-1, j)) != '#':
+                        print("checking", (i,j))
+                        length = functions_for_game.search_side(data, (i, j), 'down', char='#')
+                        position = False
+                    elif data.get((i+1, j)) != '#' and \
+                            data.get((i, j+1)) != '#' and \
+                            data.get((i-1, j)) != '#' and \
+                            data.get((i, j-1)) != '#':
+                        length = 1
+                        position = True
+                else:
+                    length = None
+                    position = None
                 if length:
                     print(Ship((i, j), position, length))
                 ships.append(Ship((i, j), position, length))
