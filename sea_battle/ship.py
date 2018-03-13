@@ -21,18 +21,30 @@ class Ship:
         """
         Add to class variable coordinates of hitten part of the ship.
         """
-        Ship.hitten.append(coord)
+        self.__hit.append(coord)
 
     def __str__(self):
+        if self.__length == "empty":
+            return "empty field on {}".format(self.bow)
+        elif self.__length == 1:
+            return "ship of length {length} at {}".format(self.bow,
+                                                          length = self.__length)
+        #horizontal = "horizontal" if self.horizontal else "vertical" "" if self.__length == 1 else ""
         return "{position} ship of length {} at {}".format(self.__length,
                                                            self.bow,
-                                                           position = "horizontal" if self.horizontal else "vertical")
+                                                           position="horizontal" if self.horizontal else "vertical")
     def __repr__(self):
+        if self.__length == "empty":
+            return "empty field on {}".format(self.bow)
+        elif self.__length == 1:
+            return "ship of length {length} at {}".format(self.bow,
+                                                          length = self.__length)
+
         return "{position} ship of length {length} at {}".format(self.bow,
                                                                  length = self.__length,
                                                                  position = "horizontal" if self.horizontal else "vertical")
 
 # self.__length[0] if self.horizontal else self.__length[1],
-# sh = Ship((1, 3), True, (4, 1))
-# sh.shoot_at((1, 5))
-# print(Ship.hitten)
+sh = Ship((1, 3), True, (4, 1))
+sh.shoot_at((1, 5))
+print(sh._Ship__hit)

@@ -52,18 +52,16 @@ def ship_size(data, coord, char='#'):
     If there's no ship in these coordinates, returns 0.
     """
     ship_len = 0
-    print(coord)
+
     if has_ship(data, coord, char):
         ship_len = 1
         if search_side(data, coord, 'left') or search_side(data, coord, 'right'):
-            print("left", search_side(data, coord, 'left'), "right", search_side(data, coord, 'right'))
             ship_len += (search_side(data, coord, 'left') +
                          search_side(data, coord, 'right'))
 
 
 
         else:
-            print("up", search_side(data, coord, 'up'), "down", search_side(data, coord, 'down'))
             ship_len += (search_side(data, coord, 'up') +
                         (search_side(data, coord, 'down')))
 
@@ -257,4 +255,5 @@ def generate_field():
 
 if __name__ == "__main__":
     generate_field()
+    # Visualize.
     #print(field_to_str(generate_field()))

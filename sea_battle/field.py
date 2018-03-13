@@ -7,49 +7,76 @@ class Field:
         """
         Initialize instance of class. Generate a standart field with ships.
         """
-        ship_res = []
         ships = []
-        # Get dict of coords and the value.
+        # Get dict of generated field that consists of coords-keys and values.
         data = functions_for_game.generate_field()
         # Visualize.
         print(functions_for_game.field_to_str(data))
 
+        # Go thruogh all coords.
         for i in range(1, 11):
+            ships_row = []
             for j in range(1, 11):
+
                 if data[(i, j)] == '#':
+                    # If there is another ship-part after this ship-part and
+                    # no other ship-part before it, get length of
+                    # horizontal ship and create Ship instance.
+                    if data.get((i, j+1)) == '#' \
+                       and data.get((i, j-1)) != '#':
 
-                    if data.get((i, j+1)) == '#' and  data.get((i, j-1)) != '#':
-                        print("checking", (i,j))
-                        length = functions_for_game.search_side(data, (i, j), 'right', char='#')
-                        position = True
-                    elif data.get((i+1, j)) == '#' and  data.get((i-1, j)) != '#':
-                        print("checking", (i,j))
-                        length = functions_for_game.search_side(data, (i, j), 'down', char='#')
-                        position = False
+                            position = True
+                            length = functions_for_game.search_side(data,
+                                                                    (i, j),
+                                                                    'right',
+                                                                    char='#')
+                            ship = Ship((i, j), position, length)
+
+                    # If there is another ship-part under this ship-part and
+                    # no other ship-part on top of it, get length of
+                    # vertical ship and create Ship instance.
+                    elif data.get((i+1, j)) == '#' and \
+                         data.get((i-1, j)) != '#':
+
+                            position = False
+                            length = functions_for_game.search_side(data,
+                                                                    (i, j),
+                                                                    'down',
+                                                                    char='#')
+                            ship = Ship((i, j), position, length)
+                    # If there is no other ship-part around this ship-part,
+                    # set it's length to 1 and create Ship instance.
                     elif data.get((i+1, j)) != '#' and \
-                            data.get((i, j+1)) != '#' and \
-                            data.get((i-1, j)) != '#' and \
-                            data.get((i, j-1)) != '#':
-                        length = 1
-                        position = True
-                else:
-                    length = None
-                    position = None
-                if length:
-                    print(Ship((i, j), position, length))
-                ships.append(Ship((i, j), position, length))
-                # print(Ship((i, j), position, length))
-            ship_res.append(ships)
-        print(len(ship_res))
-        print("!!!")
+                         data.get((i, j+1)) != '#' and \
+                         data.get((i-1, j)) != '#' and \
+                         data.get((i, j-1)) != '#':
 
-        #self.__ships = ships
+                            position = True
+                            length = 1
+                            ship = Ship((i, j), position, length)
+
+                    else:
+                        ship = "part of ship"
+                # If no shup-part was found, create a Ship instance which
+                # represents an empty field cell.
+                else:
+                    length = 'empty'
+                    position = 'empty'
+                    ship = Ship((i, j), position, length)
+                if ship:
+                    ships_row.append(ship)
+            ships.append(ships_row)
+
+        self.__ships = ships
+
     def shoot_at(self, coord):
         """
         Add coordinates of hitten ship to class variable of Ship class.
         """
-        #self.__ships[coord[0]][coord[1]].__hit.append(coord)
-        pass
+        ship = self.__ships[coord[0]][coord[1]]
+        ship.shoot_at(coord)
+        print(self.__ships[coord[0]][coord[1]])
+        print(ship._Ship__hit)
 
     def field_without_ships(self):
         """
@@ -70,7 +97,19 @@ class Field:
     #
     #     return field_str
 f = Field()
+f.shoot_at((3, 5))
+f.shoot_at((3, 6))
+f.shoot_at((3, 7))
+f.shoot_at((3, 8))
+
+
+
+
+
 # sgh1 = Ship((2, 1), True, 4)
 # sh2 = Ship((3, 2), False, 2)
 # f = Field([sgh1, sh2])
 # # print(f)
+
+
+# !!! FIX IS_VALID FUNCTION
