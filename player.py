@@ -1,5 +1,6 @@
 class Player:
     num_of_players = 0
+
     def __init__(self, name="Player{}".format(num_of_players)):
         self.__name = name
         Player.num_of_players += 1
@@ -9,7 +10,7 @@ class Player:
         try:
             self.coord = tuple(map(int, coord.split(',')))
             assert len(self.coord) > 1
-            print(list(filter(lambda x: 10 > x or x < 1 , self.coord)))
+            print(list(filter(lambda x: 10 > x or x < 1, self.coord)))
             assert tuple(filter(lambda x: 1 <= x <= 10, self.coord)) == self.coord
             return coord
         except ValueError as v_err:
