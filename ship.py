@@ -23,16 +23,29 @@ class Ship:
         self.__hit.append(coord)
 
     def is_hitten(self, coord):
+        """
+        Check if certain coordinates belong to the hitten part of the ship.
+        Return True if iven coord are in hit list of the Ship instance.
+        Else return false.
+        """
         if coord in self.__hit:
             return True
         return False
 
     def has_coord(self, coord):
-        if (self.bow[0] < coord[0] < self.bow[0] + length[0]) and (self.bow[1] < coord[1] < self.bow[1] + length[1]):
+        """
+        Check whether certain coordinates are a part of a ship.
+        """
+        if (self.bow[0] < coord[0] < self.bow[0] + length[0]) \
+            and (self.bow[1] < coord[1] < self.bow[1] + length[1]):
+
             return True
         return False
 
     def __str__(self):
+        """
+        Represent an instance for a user.
+        """
         if self.__length == "empty":
             return "empty field on {}".format(self.bow)
         elif self.__length == 1:
@@ -42,7 +55,11 @@ class Ship:
         return "{position} ship of length {} at {}".format(self.__length,
                                                            self.bow,
                                                            position="horizontal" if self.horizontal else "vertical")
+
     def __repr__(self):
+        """
+        Represent an instance for a programmer.
+        """
         if self.__length == "empty":
             return "empty field on {}".format(self.bow)
         elif self.__length == 1:

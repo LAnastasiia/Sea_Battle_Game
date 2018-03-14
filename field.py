@@ -1,5 +1,6 @@
 import functions_for_game
 from ship import Ship
+import string
 
 
 class Field:
@@ -11,7 +12,7 @@ class Field:
         # Get dict of generated field that consists of coords-keys and values.
         data = functions_for_game.generate_field()
         # Visualize.
-        print(functions_for_game.field_to_str(data))
+        # print(functions_for_game.field_to_str(data))
 
         # Go thruogh all coords.
         for i in range(1, 11):
@@ -30,7 +31,6 @@ class Field:
                                                                     (i, j),
                                                                     'right',
                                                                     char='■')
-
                             ship = Ship((i, j), position, (length, 1))
 
                     # If there is another ship-part under this ship-part and
@@ -45,6 +45,7 @@ class Field:
                                                                     'down',
                                                                     char='■')
                             ship = Ship((i, j), position, (1, length))
+
                     # If there is no other ship-part around this ship-part,
                     # set it's length to 1 and create Ship instance.
                     elif data.get((i+1, j)) != '■' and \
@@ -61,7 +62,6 @@ class Field:
                             ship = ships_row[-1]
                         elif data.get((i-1, j)):
                             ship = ships[i-2][j-1]
-
 
                 # If no shup-part was found, create a Ship instance which
                 # represents an empty field cell.
@@ -81,14 +81,11 @@ class Field:
         """
         ship = self.__ships[coord[0]-1][coord[1]-1]
         ship.shoot_at(coord)
-        print("e", ship)
-        # print(self.__ships[coord[0]][coord[1]])
 
     def field_without_ships(self):
         """
         Return a field without data about ships.
         """
-        import string
         letters = [lett for lett in string.ascii_uppercase[:10]]
         field_no_ships_str = "   " +  " ".join(letters) + "\n"
 
@@ -98,21 +95,22 @@ class Field:
                 ship = self.__ships[i-1][j-1]
 
                 if ship.is_hitten((i, j)):
-                    print("er")
-                    row_str += 'x ' #□ ❎⛒
+                    if ship._Ship__length[0] != "empty":
+                        row_str += '⛒ ' #□ ❎⛒
+                    else:
+                        row_str += '◯'
                 else:
                     row_str += '· '
             field_no_ships_str += row_str + '\n'
-        print(field_no_ships_str)
+        return field_no_ships_str
 
 
     def field_with_ships(self):
         """
         Reuturn field data including information about ships.
         """
-        import string
         letters = [lett for lett in string.ascii_uppercase[:10]]
-        field_no_ships_str = "   " +  " ".join(letters) + "\n"
+        field_with_ships_str = "   " +  " ".join(letters) + "\n"
 
         for i in range(1,11):
             row_str = '{0:2} '.format(i)
@@ -122,18 +120,16 @@ class Field:
                     if ship._Ship__length[0] != "empty":
                         row_str += '⛒ ' #□ ❎⛒
                     else:
-                        row_str += '◯' 
+                        row_str += '◯'
                 else:
-                    row_str += '· '
-            field_no_ships_str += row_str + '\n'
-        print(field_no_ships_str)
-    # def __str__(self):
-    #     """
-    #     Represent instance of Field class for user.
-    #     """
-    #     field_str = "on the field (10 * 10): \n  " + "\n  ".join(list(map(str, self.__ships)))
-    #
-    #     return field_str
+                    if ship._Ship__length[0] != "empty":
+                        row_str += '■ '
+                    else:
+                        row_str += '· '
+            field_with_ships_str += row_str + '\n'
+        return field_with_ships_str
+
+
 f = Field()
 f.shoot_at((3, 5))
 f.shoot_at((3, 6))
@@ -146,6 +142,13 @@ f.field_with_ships()
 
 
 
+    # def __str__(self):
+    #     """
+    #     Represent instance of Field class for user.
+    #     """
+    #     field_str = "on the field (10 * 10): \n  " + "\n  ".join(list(map(str, self.__ships)))
+    #
+    #     return field_str
 
 # sgh1 = Ship((2, 1), True, 4)
 # sh2 = Ship((3, 2), False, 2)
