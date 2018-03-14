@@ -1,5 +1,5 @@
-from sea_battle import functions_for_game
-from sea_battle.ship import Ship
+import functions_for_game
+from ship import Ship
 
 
 class Field:
@@ -56,23 +56,11 @@ class Field:
                             ship = Ship((i, j), position, length)
 
                     else:
-                        print("l", len(ships_row))
                         if data.get((i, j-1)) == '#':
-                            print("j = ", j, (i, j))
-                            print(ships_row)
-                            x = 1
-                            while data.get((i, j-x-1)) == '#':
-                                x += 1
-                            print("f", j-x)
-                            ship = ships_row[j-x-1]
+                            ship = ships_row[-1]
+                        elif data.get((i-1, j)):
+                            ship = ships[i-2][j-1]
 
-                        elif data.get((i-1, j)) == '#':
-                            x = 1
-                            print("i = ", i, (i, j))
-                            while data.get((i-x-1, j)) == '#':
-                                x += 1
-                            print("ff", "x=", x, j+10*(i-x-1))
-                            ship = ships_row[j+10*(i-x-1)]
 
                 # If no shup-part was found, create a Ship instance which
                 # represents an empty field cell.
@@ -80,12 +68,12 @@ class Field:
                     length = 'empty'
                     position = 'empty'
                     ship = Ship((i, j), position, length)
-
                 ships_row.append(ship)
             ships.append(ships_row)
 
         self.__ships = ships
-        print(ships)
+        print(self.__ships)
+
 
     def shoot_at(self, coord):
         """
@@ -93,14 +81,28 @@ class Field:
         """
         ship = self.__ships[coord[0]][coord[1]]
         ship.shoot_at(coord)
-        print(self.__ships[coord[0]][coord[1]])
-        print(ship._Ship__hit)
+        # print(self.__ships[coord[0]][coord[1]])
 
     def field_without_ships(self):
         """
         Return a field without data about ships.
         """
-        pass
+        import string
+        letters = string.ascii_uppercase[:10]
+        field_no_ships_str = letters + "\n"
+
+
+        for i in range(1,11):
+            row_str = '{} '.format(i-1)
+            for j in range(1,11):
+                ship = self.__ships[i-1][j-1]
+                if ship.is_hitten((i, j)):
+                    row_str += 'x '
+                else:
+                    row_str += '· '
+            field_no_ships_str += row_str + '\n'
+        print(field_no_ships_str)
+
 
     def field_with_ships(self):
         """
@@ -115,10 +117,11 @@ class Field:
     #
     #     return field_str
 f = Field()
-f.shoot_at((3, 5))
-f.shoot_at((3, 6))
-f.shoot_at((3, 7))
-f.shoot_at((3, 8))
+f.field_without_ships()
+# f.shoot_at((3, 5))
+# f.shoot_at((3, 6))
+# f.shoot_at((3, 7))
+# f.shoot_at((3, 8))
 
 
 

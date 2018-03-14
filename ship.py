@@ -23,6 +23,11 @@ class Ship:
         """
         self.__hit.append(coord)
 
+    def is_hitten(self, coord):
+        if coord in self.__hit:
+            return True
+        return False
+
     def __str__(self):
         if self.__length == "empty":
             return "empty field on {}".format(self.bow)
@@ -47,4 +52,3 @@ class Ship:
 # self.__length[0] if self.horizontal else self.__length[1],
 sh = Ship((1, 3), True, (4, 1))
 sh.shoot_at((1, 5))
-print(sh._Ship__hit)
