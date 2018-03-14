@@ -10,9 +10,10 @@ class Player:
         try:
             self.coord = tuple(map(int, coord.split(',')))
             assert len(self.coord) > 1
-            print(list(filter(lambda x: 10 > x or x < 1, self.coord)))
+            # print(list(filter(lambda x: 10 > x or x < 1, self.coord)))
             assert tuple(filter(lambda x: 1 <= x <= 10, self.coord)) == self.coord
-            return coord
+            print(self.coord)
+            return self.coord
         except ValueError as v_err:
             print("Bad shot. You entered invalid values.Try again.\n")
             self.read_position()

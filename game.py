@@ -5,7 +5,7 @@ from ship import Ship
 from player import Player
 
 class Game:
-    def __init__(self):
+    def __init__(self, players=[Player(), Player()]):
         """
         Initialize instance of Game class.
 
@@ -14,8 +14,14 @@ class Game:
         :current_player: (int) index of the current player.
         """
         self.__field = [Field(), Field()]
-        self.__players = [Player(), Player()]
+
+        self.__players = players
         self.__current_player = 0
+        print(self.__field[self.__current_player].field_with_ships())
+
+    def read_position(self):
+        shot = self.__players[self.__current_player].read_position()
+        self.__field[self.__current_player].shoot_at(shot)
 
     def field_without_ships(self):
         """
@@ -23,7 +29,6 @@ class Game:
         with shots marked on it.
         """
         field_shots = self.__field[self.__current_player].field_without_ships()
-        self.__current_player += 1
         return field_shots
 
     def field_with_ships(self):
