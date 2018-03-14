@@ -1,5 +1,4 @@
 class Ship:
-    hitten = []
     def __init__(self, bow, horizontal, length):
         """
         Initialize class instance:
@@ -25,6 +24,11 @@ class Ship:
 
     def is_hitten(self, coord):
         if coord in self.__hit:
+            return True
+        return False
+
+    def has_coord(self, coord):
+        if (self.bow[0] < coord[0] < self.bow[0] + length[0]) and (self.bow[1] < coord[1] < self.bow[1] + length[1]):
             return True
         return False
 

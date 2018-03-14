@@ -26,7 +26,7 @@ def read_field(file_name):
         return data
 
 
-def has_ship(data, coord, char='#'):
+def has_ship(data, coord, char='■'):
     """
     (dict) -> (bool)
     This function checks presence of ship on certain coordinates.
@@ -41,7 +41,7 @@ def has_ship(data, coord, char='#'):
 
 
 
-def ship_size(data, coord, char='#'):
+def ship_size(data, coord, char='■'):
     """
     (dict, tuple) -> (int)
 
@@ -138,7 +138,7 @@ def generate_data():
 
 
 
-def search_side(data, coord, side, char='#'):
+def search_side(data, coord, side, char='■'):
     """
     (dict, tuple, str) -> (int)
     This function searches for ship body in one given direction (starting
@@ -168,9 +168,9 @@ def search_side(data, coord, side, char='#'):
 
 def check_zone(data, data_with_ships, coord, direct, ship_lengh):
     data_try = dict()
-    if data[coord] == '#' or coord in data_with_ships:
+    if data[coord] == '■' or coord in data_with_ships:
         return False
-    data_try[coord] = '#'
+    data_try[coord] = '■'
     ship_len = 1
     while ship_len < ship_lengh:
         if direct == 'up':
@@ -185,7 +185,7 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
         if (new_coord in data_with_ships) or (new_coord not in data):
             return False
 
-        data_try[new_coord] = '#'
+        data_try[new_coord] = '■'
         ship_len += 1
         coord = new_coord
 
