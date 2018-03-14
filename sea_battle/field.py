@@ -1,6 +1,6 @@
-from ship import Ship
-import functions_for_game
-import random
+from sea_battle import functions_for_game
+from sea_battle.ship import Ship
+
 
 class Field:
     def __init__(self):
@@ -56,18 +56,36 @@ class Field:
                             ship = Ship((i, j), position, length)
 
                     else:
-                        ship = "part of ship"
+                        print("l", len(ships_row))
+                        if data.get((i, j-1)) == '#':
+                            print("j = ", j, (i, j))
+                            print(ships_row)
+                            x = 1
+                            while data.get((i, j-x-1)) == '#':
+                                x += 1
+                            print("f", j-x)
+                            ship = ships_row[j-x-1]
+
+                        elif data.get((i-1, j)) == '#':
+                            x = 1
+                            print("i = ", i, (i, j))
+                            while data.get((i-x-1, j)) == '#':
+                                x += 1
+                            print("ff", "x=", x, j+10*(i-x-1))
+                            ship = ships_row[j+10*(i-x-1)]
+
                 # If no shup-part was found, create a Ship instance which
                 # represents an empty field cell.
                 else:
                     length = 'empty'
                     position = 'empty'
                     ship = Ship((i, j), position, length)
-                if ship:
-                    ships_row.append(ship)
+
+                ships_row.append(ship)
             ships.append(ships_row)
 
         self.__ships = ships
+        print(ships)
 
     def shoot_at(self, coord):
         """
