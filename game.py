@@ -4,9 +4,21 @@
 
 class Game(Field, Player):
     def __init__(fields, players):
-        self.__fields = field
+        """
+        Initialize instance of Game class.
+
+        :field: (list) array of fields;
+        :players: (list) array of players;
+        :current_player: (int) index of the current player.
+        """
+        self.__field = fields
         self.__players = players
         self.__current_player = 1
 
-# if (self.bow[0] <= coord[0] <= (self.bow[0] + self.__length[1]) and self.bow[1] <= coord[1] <= (self.bow[1] + self.__length[0])):
-#     self.__hit.append(coord)
+    def field_without_ships(self, index):
+        """
+        Show a field (chosen from the field list by index) without ships but
+        with shots marked.
+        """
+
+    def field_with_ships(self, index)

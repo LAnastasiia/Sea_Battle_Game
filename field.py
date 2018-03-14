@@ -37,7 +37,7 @@ class Field:
                     # no other ship-part on top of it, get length of
                     # vertical ship and create Ship instance.
                     elif data.get((i+1, j)) == '■' and \
-                         data.get((i-1, j)) != '■':
+                            data.get((i-1, j)) != '■':
 
                             position = False
                             length = functions_for_game.search_side(data,
@@ -49,13 +49,13 @@ class Field:
                     # If there is no other ship-part around this ship-part,
                     # set it's length to 1 and create Ship instance.
                     elif data.get((i+1, j)) != '■' and \
-                         data.get((i, j+1)) != '■' and \
-                         data.get((i-1, j)) != '■' and \
-                         data.get((i, j-1)) != '■':
+                            data.get((i, j+1)) != '■' and \
+                            data.get((i-1, j)) != '■' and \
+                            data.get((i, j-1)) != '■':
 
-                            position = True
-                            length = 1
-                            ship = Ship((i, j), position, (length, 1))
+                        position = True
+                        length = 1
+                        ship = Ship((i, j), position, (length, 1))
 
                     else:
                         if data.get((i, j-1)) == '■':
@@ -74,7 +74,6 @@ class Field:
 
         self.__ships = ships
 
-
     def shoot_at(self, coord):
         """
         Add coordinates to __hit attriute of the ship.
@@ -87,16 +86,16 @@ class Field:
         Return a field without data about ships.
         """
         letters = [lett for lett in string.ascii_uppercase[:10]]
-        field_no_ships_str = "   " +  " ".join(letters) + "\n"
+        field_no_ships_str = "   " + " ".join(letters) + "\n"
 
-        for i in range(1,11):
+        for i in range(1, 11):
             row_str = '{0:2} '.format(i)
-            for j in range(1,11):
+            for j in range(1, 11):
                 ship = self.__ships[i-1][j-1]
 
                 if ship.is_hitten((i, j)):
                     if ship._Ship__length[0] != "empty":
-                        row_str += '⛒ ' #□ ❎⛒
+                        row_str += '⛒ '   # □ ❎⛒
                     else:
                         row_str += '◯'
                 else:
@@ -104,21 +103,20 @@ class Field:
             field_no_ships_str += row_str + '\n'
         return field_no_ships_str
 
-
     def field_with_ships(self):
         """
         Reuturn field data including information about ships.
         """
         letters = [lett for lett in string.ascii_uppercase[:10]]
-        field_with_ships_str = "   " +  " ".join(letters) + "\n"
+        field_with_ships_str = "   " + " ".join(letters) + "\n"
 
-        for i in range(1,11):
+        for i in range(1, 11):
             row_str = '{0:2} '.format(i)
-            for j in range(1,11):
+            for j in range(1, 11):
                 ship = self.__ships[i-1][j-1]
                 if ship.is_hitten((i, j)):
                     if ship._Ship__length[0] != "empty":
-                        row_str += '⛒ ' #□ ❎⛒
+                        row_str += '⛒ '  # □ ❎⛒
                     else:
                         row_str += '◯'
                 else:
@@ -139,16 +137,6 @@ f.shoot_at((3, 8))
 f.field_without_ships()
 f.field_with_ships()
 
-
-
-
-    # def __str__(self):
-    #     """
-    #     Represent instance of Field class for user.
-    #     """
-    #     field_str = "on the field (10 * 10): \n  " + "\n  ".join(list(map(str, self.__ships)))
-    #
-    #     return field_str
 
 # sgh1 = Ship((2, 1), True, 4)
 # sh2 = Ship((3, 2), False, 2)
