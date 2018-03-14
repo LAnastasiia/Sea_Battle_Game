@@ -125,6 +125,7 @@ class Field:
                     else:
                         row_str += '· '
             field_with_ships_str += row_str + '\n'
+        #print(field_with_ships_str)
         return field_with_ships_str
 
 

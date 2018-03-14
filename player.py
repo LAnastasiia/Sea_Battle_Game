@@ -21,6 +21,6 @@ class Player:
 belong to the field. Try again.\n")
             self.read_position()
 
-pl = Player('Lara')
-print(pl)
-pl.read_position()
+# pl = Player('Lara')
+# print(pl)
+# pl.read_position()
