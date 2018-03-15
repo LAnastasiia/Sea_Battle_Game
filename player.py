@@ -5,6 +5,12 @@ class Player:
         self.__name = name
         Player.num_of_players += 1
 
+    def set_nickname(self):
+        nickname = input("If You want, You can enter a nickname: ")
+        if nickname:
+            self.__name = nickname
+
+
     def read_position(self):
         coord = input("Make Your shot (two coords separated by comma): ")
         try:
@@ -22,6 +28,8 @@ class Player:
 belong to the field. Try again.\n")
             self.read_position()
 
+    def __str__(self):
+        return self.__name
 # pl = Player('Lara')
 # print(pl)
 # pl.read_position()

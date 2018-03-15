@@ -5,7 +5,7 @@ from ship import Ship
 from player import Player
 
 class Game:
-    def __init__(self, players=[Player(), Player()]):
+    def __init__(self):
         """
         Initialize instance of Game class.
 
@@ -15,7 +15,7 @@ class Game:
         """
         self.__field = [Field(), Field()]
 
-        self.__players = players
+        self.__players = [Player(), Player()]
         self.__current_player = 0
         print(self.__field[self.__current_player].field_with_ships())
 
@@ -39,5 +39,6 @@ class Game:
         field_str = self.__field[self.__current_player].field_with_ships()
         return field_str
 
-g = Game()
-print(g.field_with_ships())
+
+# g = Game()
+# print(g.field_with_ships())
