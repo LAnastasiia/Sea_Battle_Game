@@ -52,15 +52,14 @@ def ship_size(data, coord, char='■'):
 
     if has_ship(data, coord, char):
         ship_len = 1
-        if search_side(data, coord, 'left') or search_side(data, coord, 'right'):
+        if search_side(data, coord, 'left') or \
+                search_side(data, coord, 'right'):
             ship_len += (search_side(data, coord, 'left') +
                          search_side(data, coord, 'right'))
 
-
-
         else:
             ship_len += (search_side(data, coord, 'up') +
-                        (search_side(data, coord, 'down')))
+                         (search_side(data, coord, 'down')))
 
         return ship_len
 
@@ -221,26 +220,26 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
     for coords in data_try:
         if direct == 'up' or direct == 'down':
             data_with_ships.extend([coords, (coords[0], coords[1]+1),
-                                (coords[0], coords[1]-1)])
+                                   (coords[0], coords[1]-1)])
         else:
             data_with_ships.extend([coords, (coords[0]+1, coords[1]),
-                                (coords[0]-1, coords[1])])
+                                   (coords[0]-1, coords[1])])
 
     if direct == 'up' or direct == 'down':
-        sorted_data_try = sorted(data_try, key = lambda x: x[0], reverse=False)
+        sorted_data_try = sorted(data_try, key=lambda x: x[0], reverse=False)
         min_ship_coord = sorted_data_try[0]
         max_ship_coord = sorted_data_try[-1]
-        data_with_ships.extend([(min_ship_coord[0]-1,min_ship_coord[1]),
+        data_with_ships.extend([(min_ship_coord[0]-1, min_ship_coord[1]),
                                (min_ship_coord[0]-1, min_ship_coord[1]-1),
                                (min_ship_coord[0]-1, min_ship_coord[1]+1),
                                (max_ship_coord[0]+1, max_ship_coord[1]),
                                (max_ship_coord[0]+1, max_ship_coord[1]-1),
                                (max_ship_coord[0]+1, max_ship_coord[1]+1)])
     elif direct == 'left' or direct == 'right':
-        sorted_data_try = sorted(data_try, key = lambda x: x[1], reverse=False)
+        sorted_data_try = sorted(data_try, key=lambda x: x[1], reverse=False)
         min_ship_coord = sorted_data_try[0]
         max_ship_coord = sorted_data_try[-1]
-        data_with_ships.extend([(min_ship_coord[0],min_ship_coord[1]-1),
+        data_with_ships.extend([(min_ship_coord[0], min_ship_coord[1]-1),
                                (min_ship_coord[0]-1, min_ship_coord[1]-1),
                                (min_ship_coord[0]+1, min_ship_coord[1]-1),
                                (max_ship_coord[0], max_ship_coord[1]+1),
@@ -257,7 +256,7 @@ def build_ship(data, ship_lengh, data_with_ships):
     """
     directions = ['left', 'right', 'up', 'down']
     while True:
-        coord = (random.randint(1,10), random.randint(1,10))
+        coord = (random.randint(1, 10), random.randint(1, 10))
         direct = random.choice(directions)
         checked_data = check_zone(data, data_with_ships, coord, direct,
                                   ship_lengh)
@@ -286,4 +285,4 @@ def generate_field():
 if __name__ == "__main__":
     generate_field()
     # Visualize.
-    #print(field_to_str(generate_field()))
+    # print(field_to_str(generate_field()))
