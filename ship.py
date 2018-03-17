@@ -48,11 +48,18 @@ class Ship:
         """
         if self.__length == "empty":
             return "empty field on {}".format(self.bow)
-        elif self.__length == 1:
-            return "ship of length {length} at {}".format(self.bow,
-                                                          length=self.__length)
 
-        return "{position} ship of length {} \
+        elif self.__length == 1:
+            return "ship of length {} at {}".format(self.__length,
+                                                    self.bow)
+
+        else:
+            length = self.__length[0] if self.horizontal else self.__length[1]
+            position = "horizontal" if self.horizontal else "vertical"
+
+            return "{} ship of length {} at {}".format(length,
+                                                       position,
+                                                       self.bow)
 at {}".format(self.__length,
               self.bow,
               position="horizontal" if self.horizontal else "vertical")
@@ -62,17 +69,16 @@ at {}".format(self.__length,
         Represent an instance for a programmer.
         """
         if self.__length == "empty":
-            return "empty field on {}".format(self.bow)
+            return "{}: ('horizontal', 0)".format(self.bow)
+
         elif self.__length == 1:
-            return "ship of length {length} \
-at {}".format(self.bow,
-              length=self.__length)
+            return "{}: ({}, 1)".format(self.__length,
+                                                    self.bow)
 
-        return "{position} ship of length {length}\
-at {}".format(self.bow,
-              length=self.__length[0] if self.horizontal else self.__length[1],
-              position="horizontal" if self.horizontal else "vertical")
+        else:
+            length = self.__length[0] if self.horizontal else self.__length[1]
+            position = "horizontal" if self.horizontal else "vertical"
 
-# self.__length[0] if self.horizontal else self.__length[1],
-sh = Ship((1, 3), True, (4, 1))
-sh.shoot_at((1, 5))
+            return "{}: ({}, {})".format(self.bow
+                                                       length,
+                                                       position)

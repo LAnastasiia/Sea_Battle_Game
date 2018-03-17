@@ -4,6 +4,7 @@ from field import Field
 from ship import Ship
 from player import Player
 
+
 class Game:
     def __init__(self):
         """
@@ -38,7 +39,3 @@ class Game:
         """
         field_str = self.__field[self.__current_player].field_with_ships()
         return field_str
-
-
-# g = Game()
-# print(g.field_with_ships())

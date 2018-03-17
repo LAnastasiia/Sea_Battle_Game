@@ -38,9 +38,6 @@ def has_ship(data, coord, char='■'):
     return False
 
 
-
-
-
 def ship_size(data, coord, char='■'):
     """
     (dict, tuple) -> (int)
@@ -81,27 +78,57 @@ def is_valid(data):
     length 1). If something is wrong, it prints out a message about error and
     returnes False. If everything is valis, - returns True.
     """
-    if (10, 10) in data:
-        check_size_dict = dict()
-        for key_coord in data:
-            ship_len = ship_size(data, key_coord)
-            if ship_len < 5:
-                if ship_len in check_size_dict:
-                    check_size_dict[ship_len] += 1
-                else:
-                    check_size_dict[ship_len] = 1
-            else:
-                print("Wrong length of ship. All shipps must be less than 5.")
-        if (check_size_dict[4] == 4 and check_size_dict[3] == 6 and
-            check_size_dict[2] == 6 and check_size_dict[1] == 4):
+    check_data = dict()
+    for i in range(1, 11):
+        for j in range(1, 11):
 
+            if data[(i, j)] == '■':
+
+                if data.get((i, j+1)) == '■' \
+                   and data.get((i, j-1)) != '■':
+
+                        length = functions_for_game.search_side(data,
+                                                                (i, j),
+                                                                'right',
+                                                                char='■')
+                        print(i, j, length)
+
+                # If there is another ship-part under this ship-part and
+                # no other ship-part on top of it, get length of
+                # vertical ship and create Ship instance.
+                elif data.get((i+1, j)) == '■' and \
+                        data.get((i-1, j)) != '■':
+
+                        length = functions_for_game.search_side(data,
+                                                                (i, j),
+                                                                'down',
+                                                                char='■')
+                        print(i, j, length)
+
+                # If there is no other ship-part around this ship-part,
+                # set it's length to 1 and create Ship instance.
+                elif data.get((i+1, j)) != '■' and \
+                        data.get((i, j+1)) != '■' and \
+                        data.get((i-1, j)) != '■' and \
+                        data.get((i, j-1)) != '■':
+
+                    length = 1
+                    print('1')
+
+                else:
+                    length = 0
+
+                if length:
+                    if length in check_data:
+                        check_data[length] += 1
+                    else:
+                        check_data[length] = 1
+
+    if len(check_data) == 4:
+        if check_data[1] == 4 and check_data[2] == 3 \
+                and check_data[3] == 2 and check_data[4] == 1:
             return True
-        else:
-            print("Wrong amount or(and) length of ships.")
-            return False
-    else:
-        print("Wrong size of field. Expected: 10 * 10.")
-        return False
+    return False
 
 
 def field_to_str(data):
@@ -137,7 +164,6 @@ def generate_data():
     return data_gen
 
 
-
 def search_side(data, coord, side, char='■'):
     """
     (dict, tuple, str) -> (int)
@@ -167,6 +193,9 @@ def search_side(data, coord, side, char='■'):
 
 
 def check_zone(data, data_with_ships, coord, direct, ship_lengh):
+    """
+    This function checks zone (with 1 cell as radius) around certain coord.
+    """
     data_try = dict()
     if data[coord] == '■' or coord in data_with_ships:
         return False
@@ -188,7 +217,6 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
         data_try[new_coord] = '■'
         ship_len += 1
         coord = new_coord
-
 
     for coords in data_try:
         if direct == 'up' or direct == 'down':
@@ -221,6 +249,7 @@ def check_zone(data, data_with_ships, coord, direct, ship_lengh):
 
     return (data_try)
 
+
 def build_ship(data, ship_lengh, data_with_ships):
     """
     This function builds ship of given length in randomly chosen coordinate
@@ -235,6 +264,7 @@ def build_ship(data, ship_lengh, data_with_ships):
         if checked_data:
             data.update(checked_data)
             break
+
 
 def generate_field():
     """
