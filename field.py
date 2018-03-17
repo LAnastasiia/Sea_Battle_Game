@@ -11,9 +11,6 @@ class Field:
         ships = []
         # Get dict of generated field that consists of coords-keys and values.
         data = functions_for_game.generate_field()
-        # Visualize.
-        # print(functions_for_game.field_to_str(data))
-
         # Go thruogh all coords.
         for i in range(1, 11):
             ships_row = []
@@ -73,6 +70,7 @@ class Field:
             ships.append(ships_row)
 
         self.__ships = ships
+        print(self.__ships)
 
     def shoot_at(self, coord):
         """
@@ -125,24 +123,4 @@ class Field:
                     else:
                         row_str += '· '
             field_with_ships_str += row_str + '\n'
-        #print(field_with_ships_str)
         return field_with_ships_str
-
-
-f = Field()
-f.shoot_at((3, 5))
-f.shoot_at((3, 6))
-f.shoot_at((3, 7))
-f.shoot_at((3, 8))
-
-f.field_without_ships()
-f.field_with_ships()
-
-
-# sgh1 = Ship((2, 1), True, 4)
-# sh2 = Ship((3, 2), False, 2)
-# f = Field([sgh1, sh2])
-# # print(f)
-
-
-# !!! FIX IS_VALID FUNCTION

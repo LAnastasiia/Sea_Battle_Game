@@ -12,24 +12,23 @@ class Player:
 
 
     def read_position(self):
-        coord = input("Make Your shot (two coords separated by comma): ")
-        try:
-            self.coord = tuple(map(int, coord.split(',')))
-            assert len(self.coord) > 1
-            # print(list(filter(lambda x: 10 > x or x < 1, self.coord)))
-            assert tuple(filter(lambda x: 1 <= x <= 10, self.coord)) == self.coord
-            print(self.coord)
-            return self.coord
-        except ValueError as v_err:
-            print("Bad shot. You entered invalid values.Try again.\n")
-            self.read_position()
-        except AssertionError:
-            print("You entered only one coordinate or coordinates don't \
+        while True:
+            coord = input("Make Your shot (two coords separated by comma): ")
+            try:
+                assert len(coord) > 1
+                assert ',' in coord
+                self.coord = tuple(map(int, coord.split(',')))
+                assert len(self.coord) > 1
+                assert tuple(filter(lambda x: 1 <= x <= 10,
+                                    self.coord)) == self.coord
+                return self.coord
+            except ValueError as v_err:
+                print("Bad shot. You entered invalid values.Try again.\n")
+            except AssertionError:
+                print("You entered only one coordinate or coordinates don't \
 belong to the field. Try again.\n")
-            self.read_position()
+            except Exception as exc:
+                print("Error occured. Check Your input and try again.")
 
     def __str__(self):
         return self.__name
-# pl = Player('Lara')
-# print(pl)
-# pl.read_position()

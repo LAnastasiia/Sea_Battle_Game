@@ -3,10 +3,11 @@
 from field import Field
 from ship import Ship
 from player import Player
+import functions_for_game
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, num_of_players):
         """
         Initialize instance of Game class.
 
@@ -14,11 +15,17 @@ class Game:
         :players: (list) array of players;
         :current_player: (int) index of the current player.
         """
-        self.__field = [Field(), Field()]
+        self.num_of_players = num_of_players
+        # Generate a list of Players.
+        self.__players = [Player() for i in range(self.num_of_players)]
+        # Give a chance to pick up a nickname for every player.
+        for pl in self.__players:
+            pl.set_nickname()
 
-        self.__players = [Player(), Player()]
+        # Generate Field(s) according to num_of_players.
+        self.__field = [Field() for i in range(self.num_of_players)]
         self.__current_player = 0
-        print(self.__field[self.__current_player].field_with_ships())
+
 
     def read_position(self):
         shot = self.__players[self.__current_player].read_position()

@@ -60,9 +60,7 @@ class Ship:
             return "{} ship of length {} at {}".format(length,
                                                        position,
                                                        self.bow)
-at {}".format(self.__length,
-              self.bow,
-              position="horizontal" if self.horizontal else "vertical")
+
 
     def __repr__(self):
         """
@@ -79,6 +77,6 @@ at {}".format(self.__length,
             length = self.__length[0] if self.horizontal else self.__length[1]
             position = "horizontal" if self.horizontal else "vertical"
 
-            return "{}: ({}, {})".format(self.bow
-                                                       length,
-                                                       position)
+            return "{}: ({}, {})".format(self.bow,
+                                         length,
+                                         position)

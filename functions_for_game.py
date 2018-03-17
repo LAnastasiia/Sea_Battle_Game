@@ -66,7 +66,7 @@ def ship_size(data, coord, char='■'):
     return 0
 
 
-def is_valid(data):
+def is_valid(data, char='■'):
     """
     (data) -> (bool)
     This function checks whether given sea-battle field is valid. It checks
@@ -78,41 +78,41 @@ def is_valid(data):
     returnes False. If everything is valis, - returns True.
     """
     check_data = dict()
-    for i in range(1, 11):
-        for j in range(1, 11):
+    for i in range(10):
+        for j in range(10):
 
-            if data[(i, j)] == '■':
+            if data[i][j] == char:
 
-                if data.get((i, j+1)) == '■' \
-                   and data.get((i, j-1)) != '■':
+                if data[i][j] == char \
+                   and data[i][j] != char:
 
                         length = functions_for_game.search_side(data,
                                                                 (i, j),
                                                                 'right',
-                                                                char='■')
-                        print(i, j, length)
+                                                                char=char)
+
 
                 # If there is another ship-part under this ship-part and
                 # no other ship-part on top of it, get length of
                 # vertical ship and create Ship instance.
-                elif data.get((i+1, j)) == '■' and \
-                        data.get((i-1, j)) != '■':
+                elif data[i][j] == char and \
+                        data[i][j] != char:
 
                         length = functions_for_game.search_side(data,
                                                                 (i, j),
                                                                 'down',
-                                                                char='■')
-                        print(i, j, length)
+                                                                char=char)
+
 
                 # If there is no other ship-part around this ship-part,
                 # set it's length to 1 and create Ship instance.
-                elif data.get((i+1, j)) != '■' and \
-                        data.get((i, j+1)) != '■' and \
-                        data.get((i-1, j)) != '■' and \
-                        data.get((i, j-1)) != '■':
+                elif data[i][j] != char and \
+                        data[i][j] != char and \
+                        data[i][j] != char and \
+                        data[i][j] != char:
 
                     length = 1
-                    print('1')
+
 
                 else:
                     length = 0
